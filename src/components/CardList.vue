@@ -16,7 +16,7 @@ const onClickAdd = () => {
       v-for="item in items"
       :key="item.id"
       :title="item.title"
-      imageUrl="item.imageUrl"
+      :imageUrl="item.imageUrl"
       :price="item.price"
       :isFavorite="false"
       :onClickAdd="onClickAdd"
