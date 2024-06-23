@@ -2,10 +2,11 @@
 import { ref } from 'vue'
 
 defineProps({
+  id: Number,
   title: String,
-  img: String,
+  imageUrl: String,
   price: Number,
-  isFavorete: Boolean,
+  isFavorite: Boolean,
   isAdded: Boolean,
   onClickAdd: Function,
   onClickFavorite: Function
@@ -23,7 +24,8 @@ defineProps({
     class="relative flex flex-col w-full border border-slate-100 rounded-xl p-8 cursor-pointer transition hover:shadow-xl hover:transform hover:-translate-y-2"
   >
     <img
-      :src="isFavorete ? '/like-1.svg' : '/like-2.svg'"
+      v-if="onClickFavorite"
+      :src="!isFavorite ? '/like-1.svg' : '/like-2.svg'"
       alt="Favorite"
       class="absolute top-8 left-8"
       @click="onClickFavorite"
