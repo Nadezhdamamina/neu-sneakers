@@ -6,6 +6,7 @@ import CardList from '../components/CardList.vue'
 import Drawer from '../components/Drawer.vue'
 
 const items = ref([])
+const cart = ref([])
 
 const filters = reactive({
   sortBy: 'title',
@@ -89,6 +90,16 @@ const fetchItems = async () => {
   }
 }
 
+const addToCart = (item) => {
+  if (!item.isAdded) {
+    cart.value.push(item)
+    item.isAdded = true
+  } else {
+    cart.value.splice(cart.value.indexOf(item), 1)
+    item.isAdded = false
+  }
+}
+
 onMounted(fetchItems)
 watch(filters, fetchItems)
 </script>
@@ -121,7 +132,7 @@ watch(filters, fetchItems)
     </div>
 
     <div class="mt-10">
-      <CardList :items="items" @add-to-favorite="addToFavorite" />
+      <CardList :items="items" @add-to-favorite="addToFavorite" @add-to-cart="addToCart" />
     </div>
   </div>
 </template>

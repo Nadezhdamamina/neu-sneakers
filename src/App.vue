@@ -14,7 +14,6 @@ const closeDrawer = () => {
 const openDrawer = () => {
   drawerOpen.value = true
 }
-
 provide('cartActions', {
   closeDrawer,
   openDrawer
