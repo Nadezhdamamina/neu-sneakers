@@ -1,14 +1,22 @@
 <script setup>
+import { inject } from 'vue'
 import CartItem from './CartItem.vue'
+
+const { cart, addToCart } = inject('cart')
+
+const onClickRemove = () => {
+  addToCart(item)
+}
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
     <CartItem
-      title="Мужские Кроссовки Nike Blazer Mid Suede"
-      price="1000"
-      img="/sneakers/sneakers-1.jpg"
+      v-for="item in cart"
+      :key="item.id"
+      :title="item.title"
+      :price="item.price"
+      :image-url="item.imageUrl"
     />
-    <CartItem />
   </div>
 </template>
