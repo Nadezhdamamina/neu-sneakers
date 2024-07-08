@@ -1,6 +1,42 @@
 <script setup>
+import axios from 'axios'
+import { ref, computed, inject } from 'vue'
+
 import DrawerHead from './DrawerHead.vue'
 import CartItemList from './CartItemList.vue'
+// import InfoBlock from './InfoBlock.vue'
+
+const props = defineProps({
+  totalPrice: Number,
+  vatPrice: Number
+})
+
+const { cart, closeDrawer } = inject('cart')
+
+const isCreating = ref(false)
+const orderId = ref(null)
+
+const createOrder = async () => {
+  try {
+    isCreating.value = true
+
+    const { data } = await axios.post(`https://db603569a6b95760.mokky.dev/orders`, {
+      items: cart.value,
+      totalPrice: props.totalPrice.value
+    })
+
+    cart.value = []
+
+    orderId.value = data.id
+  } catch (err) {
+    console.log(err)
+  } finally {
+    isCreating.value = false
+  }
+}
+
+const cartIsEmpty = computed(() => cart.value.length === 0)
+const buttonDisabled = computed(() => isCreating.value || cartIsEmpty.value)
 </script>
 
 <template>
@@ -17,21 +53,22 @@ import CartItemList from './CartItemList.vue'
         <div class="flex items-end gap-2">
           <span>Итого:</span>
           <div class="flex-1 border-b border-dashed"></div>
-          <span class="font-bold">1000 руб.</span>
+          <span class="font-bold"> {{ totalPrice }} руб. </span>
         </div>
 
         <div class="flex items-end gap-2">
           <span>Налог 5%:</span>
           <div class="flex-1 border-b border-dashed"></div>
-          <span class="font-bold">50 руб.</span>
+          <span class="font-bold"> {{ vatPrice }} руб.</span>
         </div>
 
         <button
-          disabled=""
-          class="flex justify-center items-center gap-3 w-full py-3 mt-10 bg-lime-500 text-white disabled:bg-slate-300 rounded-xl transition active:bg-lime-700 hover:bg-lime-600 cursor:pointer"
+          :disabled="buttonDisabled"
+          @click="createOrder"
+          class="mt-4 transition bg-lime-500 w-full rounded-xl py-3 text-white disabled:bg-slate-300 hover:bg-lime-600 active:bg-lime-700 cursor-pointer"
         >
           Оформить заказ
-          <img src="/arrow-next.svg" alt="Arrow" />
+          <!-- <img src="/arrow-next.svg" alt="Arrow" /> -->
         </button>
       </div>
     </div>

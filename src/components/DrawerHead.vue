@@ -1,5 +1,5 @@
 <script setup>
-import CartItem from './CartItem.vue'
+// import CartItem from './CartItem.vue'
 
 import { inject } from 'vue'
 
@@ -32,6 +32,6 @@ const { closeDrawer } = inject('cart')
         stroke-linejoin="round"
       />
     </svg>
-    Корзина
+    <h2 class="text-2xl font-bold">Корзина</h2>
   </h2>
 </template>

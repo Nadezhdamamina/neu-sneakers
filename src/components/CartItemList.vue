@@ -2,11 +2,11 @@
 import { inject } from 'vue'
 import CartItem from './CartItem.vue'
 
-const { cart, addToCart } = inject('cart')
+const { cart, removeFromCart } = inject('cart')
 
-const onClickRemove = () => {
-  addToCart(item)
-}
+// const onClickRemove = () => {
+//   addToCart(item)
+// }
 </script>
 
 <template>
@@ -17,6 +17,7 @@ const onClickRemove = () => {
       :title="item.title"
       :price="item.price"
       :image-url="item.imageUrl"
+      @on-click-remove="() => removeFromCart(item)"
     />
   </div>
 </template>

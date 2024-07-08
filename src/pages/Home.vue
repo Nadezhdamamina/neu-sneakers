@@ -1,17 +1,28 @@
 <script setup>
 import { onMounted, ref, reactive, provide, watch } from 'vue'
 import axios from 'axios'
+import { inject } from 'vue'
 
 import CardList from '../components/CardList.vue'
 import Drawer from '../components/Drawer.vue'
 
+const { cart, addToCart, removeFromCart } = inject('cart')
+
 const items = ref([])
-const cart = ref([])
+// const cart = ref([])
 
 const filters = reactive({
   sortBy: 'title',
   searchQuery: ''
 })
+
+const onClickAddPlus = (item) => {
+  if (!item.isAdded) {
+    addToCart(item)
+  } else {
+    removeFromCart(item)
+  }
+}
 
 const onChangeSelect = (event) => {
   filters.sortBy = event.target.value
@@ -87,16 +98,6 @@ const fetchItems = async () => {
     }))
   } catch (err) {
     console.log(err)
-  }
-}
-
-const addToCart = (item) => {
-  if (!item.isAdded) {
-    cart.value.push(item)
-    item.isAdded = true
-  } else {
-    cart.value.splice(cart.value.indexOf(item), 1)
-    item.isAdded = false
   }
 }
 
